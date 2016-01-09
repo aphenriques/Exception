@@ -32,14 +32,6 @@
 #include <string>
 #include <type_traits>
 
-// http://sourceforge.net/p/predef/wiki/OperatingSystems/
-#if defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
-#define __func__ __FUNCTION__
-#endif
-
-#define EXCEPTION_RUNTIME_EXCEPTION(errorMessage) exception::RuntimeException(__FILE__, __LINE__, __func__, errorMessage)
-#define EXCEPTION_LOGIC_EXCEPTION(errorMessage) exception::RuntimeException(__FILE__, __LINE__, __func__, errorMessage)
-
 namespace exception {
     template<typename T>
     class Exception : public T {
