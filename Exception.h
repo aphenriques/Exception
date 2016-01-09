@@ -30,10 +30,21 @@
 
 #include <stdexcept>
 #include <string>
+#include <type_traits>
+
+// http://sourceforge.net/p/predef/wiki/OperatingSystems/
+#if defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
+#define __func__ __FUNCTION__
+#endif
+
+#define EXCEPTION_RUNTIME_EXCEPTION(errorMessage) exception::RuntimeException(__FILE__, __LINE__, __func__, errorMessage)
+#define EXCEPTION_LOGIC_EXCEPTION(errorMessage) exception::RuntimeException(__FILE__, __LINE__, __func__, errorMessage)
 
 namespace exception {
     template<typename T>
     class Exception : public T {
+        static_assert(std::is_base_of<std::exception, T>::value == true, "exception::Exception<T>: typename T must be derived from std::exception");
+
     public:
         Exception(const std::string &fileName, unsigned lineNumber, const std::string &functionName, const std::string &errorMessage);
     };
