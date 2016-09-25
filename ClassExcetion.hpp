@@ -1,5 +1,5 @@
 //
-//  ClassException.h
+//  ClassException.hpp
 //  exception
 //
 // The MIT License (MIT)
