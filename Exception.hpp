@@ -25,8 +25,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef exception_Exception_h
-#define exception_Exception_h
+#ifndef exception_Exception_hpp
+#define exception_Exception_hpp
 
 #include <stdexcept>
 #include <string>
@@ -50,4 +50,4 @@ namespace exception {
     Exception<T>::Exception(const std::string &fileName, unsigned lineNumber, const std::string &functionName, const std::string &errorMessage) : T(errorMessage + " at " + fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + ")") {}
 }
 
-#endif /* exception_Exception_h */
+#endif /* exception_Exception_hpp */

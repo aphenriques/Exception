@@ -25,8 +25,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef exception_ClassException_h
-#define exception_ClassException_h
+#ifndef exception_ClassException_hpp
+#define exception_ClassException_hpp
 
 #include <stdexcept>
 #include <string>
@@ -47,4 +47,4 @@ namespace exception {
     inline ClassException<E>::ClassException(const std::string &errorMessage) : E(errorMessage) {}
 }
 
-#endif /* exception_ClassException_h */
+#endif /* exception_ClassException_hpp */
