@@ -44,7 +44,7 @@ namespace exception {
     //--
 
     template<typename T, typename E>
-    inline ClassException<E>::ClassException(const std::string &errorMessage) : E(errorMessage) {}
+    inline ClassException<T, E>::ClassException(const std::string &errorMessage) : E(errorMessage) {}
 }
 
 #endif /* exception_ClassException_hpp */
