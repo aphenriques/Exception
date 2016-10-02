@@ -31,6 +31,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 namespace exception {
     template<typename T, typename E>
@@ -38,13 +39,15 @@ namespace exception {
         static_assert(std::is_base_of<std::exception, E>::value == true, "exception::ClassException<T, E>: typename E must be derived from std::exception");
 
     public:
-        inline ClassException(const std::string &errorMessage);
+        template<typename ...A>
+        inline ClassException(A &&arguments...);
     };
 
     //--
 
     template<typename T, typename E>
-    inline ClassException<T, E>::ClassException(const std::string &errorMessage) : E(errorMessage) {}
+    template<typename ...A>
+    inline ClassException<T, E>::ClassException(A &&...arguments) : E(std::forward<A>(arguments)...) {}
 }
 
 #endif /* exception_ClassException_hpp */

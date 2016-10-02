@@ -38,13 +38,15 @@ namespace exception {
         static_assert(std::is_base_of<std::exception, E>::value == true, "exception::TemplateClassException<T, E>: typename E must be derived from std::exception");
 
     public:
-        inline TemplateClassException(const std::string &errorMessage);
+        template<typename ...A>
+        inline TemplateClassException(A &&arguments...);
     };
 
     //--
 
     template<template<typename ...> class T, typename E>
-    inline TemplateClassException<T, E>::TemplateClassException(const std::string &errorMessage) : E(errorMessage) {}
+    template<typename ...A>
+    inline TemplateClassException<T, E>::TemplateClassException(A &&...arguments) : E(std::forward<A>(arguments)...) {}
 }
 
 #endif /* exception_TemplateClassException_hpp */
