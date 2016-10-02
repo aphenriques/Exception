@@ -39,7 +39,7 @@ namespace exception {
 
     public:
         template<typename ...A>
-        inline TemplateClassException(A &&arguments...);
+        inline TemplateClassException(A &&...arguments);
     };
 
     //--

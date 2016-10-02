@@ -40,7 +40,7 @@ namespace exception {
 
     public:
         template<typename ...A>
-        inline ClassException(A &&arguments...);
+        inline ClassException(A &&...arguments);
     };
 
     //--
