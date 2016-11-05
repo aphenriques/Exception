@@ -38,7 +38,7 @@ namespace exception {
         static_assert(std::is_base_of<std::exception, T>::value == true, "exception::Exception<T>: typename T must be derived from std::exception");
 
     public:
-        Exception(const std::string &fileName, unsigned lineNumber, const std::string &functionName, const std::string &errorMessage);
+        Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage);
     };
 
     using RuntimeException = Exception<std::runtime_error>;
@@ -47,7 +47,7 @@ namespace exception {
     //--
 
     template<typename T>
-    Exception<T>::Exception(const std::string &fileName, unsigned lineNumber, const std::string &functionName, const std::string &errorMessage) : T(errorMessage + " at " + fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + ")") {}
+    Exception<T>::Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage) : T(errorMessage + " at " + fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + ")") {}
 }
 
 #endif /* exception_Exception_hpp */
