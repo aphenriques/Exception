@@ -47,7 +47,9 @@ namespace exception {
     //--
 
     template<typename T>
-    Exception<T>::Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage) : T(errorMessage + " at " + fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + ")") {}
+    Exception<T>::Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage) :
+        T(fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + "): " + errorMessage)
+    {}
 }
 
 #endif /* exception_Exception_hpp */
