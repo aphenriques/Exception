@@ -1,5 +1,5 @@
 //
-//  exceptionThrower.hpp
+//  thrower.hpp
 //  exception
 //
 // The MIT License (MIT)
@@ -25,31 +25,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef exception_exceptionThrower_hpp
-#define exception_exceptionThrower_hpp
+#ifndef exception_thrower_hpp
+#define exception_thrower_hpp
 
-#include <sstream>
-#include "Exception.hpp"
+#include <utility>
 
-namespace exception::exceptionThrower {
+namespace exception::thrower {
     // compiler attributes optimized for unlikely exception
-    template<typename E = exception::RuntimeException, typename ...A>
-    [[using gnu : noinline, cold]] [[noreturn]] void throwException(
-        const char *fileName,
-        int lineNumber,
-        const char *functionName,
-        const A &...messages
-    );
+    template<typename E, typename ...A>
+    [[using gnu : noinline, cold]] [[noreturn]] void throwException(A &&...arguments);
 
     //--
 
     template<typename E, typename ...A>
-    void throwException(const char *fileName, int lineNumber, const char *functionName, const A &...messages) {
-        std::ostringstream ostringstream;
-        (ostringstream << ... << messages);
-        throw E(fileName, lineNumber, functionName, ostringstream.str());
+    void throwException(A &&...arguments) {
+        throw E(std::forward<A>(arguments)...);
     }
 }
 
-#endif
-
+#endif /* exception_thrower_hpp */

@@ -29,7 +29,7 @@
 #define exception_Exception_hpp
 
 #include <stdexcept>
-#include <string>
+#include <sstream>
 #include <type_traits>
 
 namespace exception {
@@ -38,7 +38,8 @@ namespace exception {
         static_assert(std::is_base_of<std::exception, T>::value == true, "exception::Exception<T>: typename T must be derived from std::exception");
 
     public:
-        Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage);
+        template<typename ...A>
+        Exception(const char *fileName, int lineNumber, const char *functionName, const A &...messageParts);
     };
 
     using RuntimeException = Exception<std::runtime_error>;
@@ -47,8 +48,20 @@ namespace exception {
     //--
 
     template<typename T>
-    Exception<T>::Exception(const std::string &fileName, int lineNumber, const std::string &functionName, const std::string &errorMessage) :
-        T(fileName + ":" + std::to_string(lineNumber) + ":(" + functionName + "): " + errorMessage)
+    template<typename ...A>
+    Exception<T>::Exception(const char *fileName, int lineNumber, const char *functionName, const A &...messageParts) :
+        T(
+            [&] {
+                std::ostringstream ostringstream;
+                ostringstream << fileName << ':' << lineNumber << ":(" << functionName;
+                if constexpr (sizeof...(messageParts) != 0) {
+                    ((ostringstream << "): [[ ") << ... << messageParts) << " ]]";
+                } else {
+                    ostringstream << ')';
+                }
+                return ostringstream.str();
+            }()
+        )
     {}
 }
 
