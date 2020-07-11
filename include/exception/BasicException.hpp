@@ -2,9 +2,9 @@
 //  BasicException.hpp
 //  exception
 //
-// The MIT License (MIT)
+// MIT License
 //
-// Copyright (c) 2016 André Pereira Henriques
+// Copyright (c) 2016, 2020 André Pereira Henriques
 // aphenriques (at) outlook (dot) com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
