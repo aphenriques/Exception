@@ -4,7 +4,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2016, 2019, 2020 André Pereira Henriques (aphenriques (at) outlook (dot) com)
+// Copyright (c) 2016, 2019, 2020, 2024 André Pereira Henriques (aphenriques (at) outlook (dot) com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,12 @@
 #ifndef exception_TemplateClassException_hpp
 #define exception_TemplateClassException_hpp
 
-#include <type_traits>
+#include <concepts>
 #include <utility>
 
 namespace exception {
-    template<template<typename ...> class T, typename E>
+    template<template<typename ...> class T, std::derived_from<std::exception> E>
     class TemplateClassException : public E {
-        static_assert(std::is_base_of<std::exception, E>::value == true, "exception::TemplateClassException<T, E>: typename E must be derived from std::exception");
-
     public:
         template<typename ...A>
         inline TemplateClassException(A &&...arguments);
@@ -42,7 +40,7 @@ namespace exception {
 
     //--
 
-    template<template<typename ...> class T, typename E>
+    template<template<typename ...> class T, std::derived_from<std::exception> E>
     template<typename ...A>
     inline TemplateClassException<T, E>::TemplateClassException(A &&...arguments) : E(std::forward<A>(arguments)...) {}
 }

@@ -4,7 +4,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2016, 2019, 2020 André Pereira Henriques (aphenriques (at) outlook (dot) com)
+// Copyright (c) 2016, 2019, 2020, 2024 André Pereira Henriques (aphenriques (at) outlook (dot) com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,18 +27,16 @@
 #ifndef exception_Exception_hpp
 #define exception_Exception_hpp
 
+#include <concepts>
+#include <source_location>
 #include <stdexcept>
-#include <sstream>
-#include <type_traits>
+#include <string_view>
 
 namespace exception {
-    template<typename T>
+    template<std::derived_from<std::exception> T>
     class Exception : public T {
-        static_assert(std::is_base_of<std::exception, T>::value == true, "exception::Exception<T>: typename T must be derived from std::exception");
-
     public:
-        template<typename ...A>
-        Exception(const char *fileName, int lineNumber, const char *functionName, const A &...messageParts);
+        inline Exception(std::string_view message, const std::source_location &location = std::source_location::current());
     };
 
     using RuntimeException = Exception<std::runtime_error>;
@@ -46,20 +44,16 @@ namespace exception {
 
     //--
 
-    template<typename T>
-    template<typename ...A>
-    Exception<T>::Exception(const char *fileName, int lineNumber, const char *functionName, const A &...messageParts) :
-        T(
-            [&] {
-                std::ostringstream ostringstream;
-                ostringstream << fileName << ':' << lineNumber << ":(" << functionName;
-                if constexpr (sizeof...(messageParts) != 0) {
-                    ((ostringstream << "): [[ ") << ... << messageParts) << " ]]";
-                } else {
-                    ostringstream << ')';
-                }
-                return ostringstream.str();
-            }()
+    template<std::derived_from<std::exception> T>
+    inline Exception<T>::Exception(std::string_view message, const std::source_location &location) :
+        std::runtime_error(
+            std::format(
+                "{}:{}:({}): [[ {} ]]",
+                location.file_name(),
+                location.line(),
+                location.function_name(),
+                message
+            )
         )
     {}
 }

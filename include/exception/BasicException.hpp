@@ -4,7 +4,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2016, 2020 André Pereira Henriques (aphenriques (at) outlook (dot) com)
+// Copyright (c) 2016, 2020, 2024 André Pereira Henriques (aphenriques (at) outlook (dot) com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,10 @@
 #ifndef exception_BasicException_hpp
 #define exception_BasicException_hpp
 
-#include <cstdio>
+#include <cstddef>
 #include <exception>
 #include <string>
+#include <string_view>
 
 namespace exception {
     template<std::size_t kMessageSize>
@@ -37,6 +38,7 @@ namespace exception {
     public:
         BasicException(const char *message) noexcept;
         inline BasicException(const std::string &message) noexcept;
+        inline BasicException(std::string_view message) noexcept;
 
         const char * what() const noexcept override;
 
@@ -73,6 +75,9 @@ namespace exception {
 
     template<std::size_t kMessageSize>
     inline BasicException<kMessageSize>::BasicException(const std::string &message) noexcept : BasicException(message.c_str()) {}
+
+    template<std::size_t kMessageSize>
+    inline BasicException<kMessageSize>::BasicException(std::string_view message) noexcept : BasicException(message.data()) {}
 
     template<std::size_t kMessageSize>
     const char * BasicException<kMessageSize>::what() const noexcept {
