@@ -46,7 +46,7 @@ namespace exception {
 
     template<std::derived_from<std::exception> T>
     inline Exception<T>::Exception(std::string_view message, const std::source_location &location) :
-        std::runtime_error(
+        T(
             std::format(
                 "{}:{}:({}): [[ {} ]]",
                 location.file_name(),
